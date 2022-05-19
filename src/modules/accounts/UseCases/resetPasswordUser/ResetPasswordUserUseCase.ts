@@ -3,7 +3,7 @@ import { IDateProvider } from "../../../../shared/container/providers/DateProvid
 import { AppError } from "../../../../shared/errors/AppError";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 import { IUsersTokensRepository } from "../../repositories/IUsersTokensRepository";
-import { hash } from "bcrypt";
+import { hash } from "bcryptjs";
 
 interface IRequest {
     token: string;
@@ -28,8 +28,12 @@ class ResetPasswordUserUseCase {
             throw new AppError("Token invalid");
         }
 
-        if(this.dateProvider.compareIfBefore(userToken.expires_date, this.dateProvider.dateNow())) {
-            throw new AppError("Token invalid");
+        if(this.dateProvider.compareIfBefore(
+            userToken.expires_date, 
+            this.dateProvider.dateNow()
+            )
+        ) {
+            throw new AppError("Token expired!");
         }
 
         const user = await this.usersRepository.findById(userToken.user_id);
