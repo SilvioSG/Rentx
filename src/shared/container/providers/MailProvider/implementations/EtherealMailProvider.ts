@@ -10,7 +10,9 @@ class EtherealMailProvider implements IMailProvider{
     private client: Transporter;
     
     constructor() {
-        nodemailer.createTestAccount().then(account => {
+        nodemailer
+        .createTestAccount()
+        .then((account) => {
             const transporter = nodemailer.createTransport({
                 host: account.smtp.host,
                 port: account.smtp.port,
@@ -22,7 +24,7 @@ class EtherealMailProvider implements IMailProvider{
             });
 
             this.client = transporter;
-        }).catch(err => console.error(err));
+        }).catch((err) => console.error(err));
     }
 
     async sendMail(to: string, subject: string, variables: any, path: string): Promise<void> {
