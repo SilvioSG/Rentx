@@ -1,6 +1,7 @@
+import "reflect-metadata";
+import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
 import "express-async-errors";
-import "reflect-metadata";
 import { router } from "./routes";
 import swaggerUI from "swagger-ui-express";
 
@@ -8,6 +9,7 @@ import swaggerFile from "../../../swagger.json";
 import createConnection from "../../infra/typeorm";
 import "../../container";
 import { AppError } from "../../errors/AppError";
+import upload from "../../../config/upload";
 
 createConnection();
 const app = express();
@@ -15,6 +17,9 @@ const app = express();
 app.use(express.json());
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerFile));
+
+app.use("/avatar", express.static(`${upload.tmpFolder}/avatar`));
+app.use("/cars", express.static(`${upload.tmpFolder}/cars`));
 
 app.use(router);
 
