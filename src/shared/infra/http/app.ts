@@ -3,17 +3,18 @@ import "dotenv/config";
 import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import "express-async-errors";
-import { router } from "./routes";
 import swaggerUI from "swagger-ui-express";
 import * as Sentry from "@sentry/node";
 import * as Tracing from "@sentry/tracing";
 
-import swaggerFile from "../../../swagger.json";
-import createConnection from "../../infra/typeorm";
 import "../../container";
-import { AppError } from "../../errors/AppError";
 import upload from "../../../config/upload";
+import { AppError } from "../../errors/AppError";
 import rateLimiter from "./middlewares/rateLimiter";
+import createConnection from "../../infra/typeorm";
+
+import swaggerFile from "../../../swagger.json";
+import { router } from "./routes";
 
 createConnection();
 const app = express();
